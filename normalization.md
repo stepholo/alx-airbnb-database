@@ -56,42 +56,48 @@ No transitive dependencies (non-key attributes must not depend on other non-key 
   - Analysis:
 For each table, we check if any non-key attribute depends on another non-key attribute instead of the primary key.
 
-User:
-Non-key attributes: first_name, last_name, email, password_hash, phone_number, role, created_at.
-Dependencies: All depend directly on user_id. No non-key attribute (e.g., first_name) determines another (e.g., email).
+- User:
+  - Non-key attributes: first_name, last_name, email, password_hash, phone_number, role, created_at.
+  - Dependencies: All depend directly on user_id. No non-key attribute (e.g., first_name) determines another (e.g., email).
+  - No transitive dependencies.
+
+- Property:
+  - Non-key attributes: host_id, name, description, location, pricepernight, created_at, updated_at.
+  - Dependencies: All depend on property_id. For example, location or pricepernight does not determine description.
+  - Potential Concern: host_id is a foreign key referencing User. Could attributes like name or location depend on host_id (e.g., a host’s details)? No, because host_id is just an identifier, and properties are unique to their property_id. The host’s details (e.g., email) are stored in User, not duplicated here.
 No transitive dependencies.
-Property:
-Non-key attributes: host_id, name, description, location, pricepernight, created_at, updated_at.
-Dependencies: All depend on property_id. For example, location or pricepernight does not determine description.
-Potential Concern: host_id is a foreign key referencing User. Could attributes like name or location depend on host_id (e.g., a host’s details)? No, because host_id is just an identifier, and properties are unique to their property_id. The host’s details (e.g., email) are stored in User, not duplicated here.
-No transitive dependencies.
-Booking:
-Non-key attributes: property_id, user_id, start_date, end_date, total_price, status, created_at.
-Potential Redundancy: total_price might depend on start_date, end_date, and Property.pricepernight (via property_id). If total_price is calculated as pricepernight * (end_date - start_date), storing it introduces a potential redundancy, as it can be derived.
-Normalization Issue: This is a transitive dependency because total_price depends on non-key attributes (start_date, end_date) and an external table (Property.pricepernight). To achieve 3NF, total_price could be removed from Booking and calculated dynamically in queries (e.g., SELECT (end_date - start_date) * pricepernight AS total_price by joining Booking and Property).
-Practical Consideration: Storing total_price is common in booking systems for performance (avoiding repeated calculations) or to lock in a price at booking time (if pricepernight changes). If stored, it’s a deliberate denormalization, but it risks inconsistency if pricepernight, start_date, or end_date is updated without updating total_price.
+
+- Booking:
+  - Non-key attributes: property_id, user_id, start_date, end_date, total_price, status, created_at.
+  - Potential Redundancy: total_price might depend on start_date, end_date, and Property.pricepernight (via property_id). If total_price is calculated as pricepernight * (end_date - start_date), storing it introduces a potential redundancy, as it can be derived.
+  - Normalization Issue: This is a transitive dependency because total_price depends on non-key attributes (start_date, end_date) and an external table (Property.pricepernight). To achieve 3NF, total_price could be removed from Booking and calculated dynamically in queries (e.g., SELECT (end_date - start_date) * pricepernight AS total_price by joining Booking and Property).
+  - Practical Consideration: Storing total_price is common in booking systems for performance (avoiding repeated calculations) or to lock in a price at booking time (if pricepernight changes). If stored, it’s a deliberate denormalization, but it risks inconsistency if pricepernight, start_date, or end_date is updated without updating total_price.
 Other attributes (status, created_at) depend directly on booking_id.
-Transitive Dependency: total_price is a concern.
-Payment:
-Non-key attributes: booking_id, amount, payment_date, payment_method.
-Potential Redundancy: amount might relate to Booking.total_price. If amount is meant to equal total_price (for a single payment) or a portion of it (for multiple payments), there’s a risk of redundancy or inconsistency.
-Normalization Issue: If amount duplicates total_price or is derived from it, it could be a transitive dependency. Ideally, amount should be validated against Booking.total_price (e.g., sum of Payment.amount for a booking_id ≤ total_price), but this is a business rule, not a normalization violation unless amount is fully determined by total_price.
-Practical Consideration: Storing amount is justified, as payments may be partial or use different methods, and amount reflects the actual transaction. No clear transitive dependency unless amount is always equal to total_price.
-Other attributes (payment_date, payment_method) depend on payment_id.
-No clear transitive dependencies.
-Review:
-Non-key attributes: property_id, user_id, rating, comment, created_at.
-Dependencies: All depend on review_id. No non-key attribute (e.g., rating) determines comment.
-No transitive dependencies.
-Message:
-Non-key attributes: sender_id, recipient_id, message_body, sent_at.
-Dependencies: All depend on message_id. No non-key attribute (e.g., sender_id) determines message_body.
-No transitive dependencies.
-Conclusion:
+  - Transitive Dependency: total_price is a concern.
+
+- Payment:
+  - Non-key attributes: booking_id, amount, payment_date, payment_method.
+  - Potential Redundancy: amount might relate to Booking.total_price. If amount is meant to equal total_price (for a single payment) or a portion of it (for multiple payments), there’s a risk of redundancy or inconsistency.
+  - Normalization Issue: If amount duplicates total_price or is derived from it, it could be a transitive dependency. Ideally, amount should be validated against Booking.total_price (e.g., sum of Payment.amount for a booking_id ≤ total_price), but this is a business rule, not a normalization violation unless amount is fully determined by total_price.
+  - Practical Consideration: Storing amount is justified, as payments may be partial or use different methods, and amount reflects the actual transaction. No clear transitive dependency unless amount is always equal to total_price.
+  - Other attributes (payment_date, payment_method) depend on payment_id.
+  - No clear transitive dependencies.
+
+- Review:
+  - Non-key attributes: property_id, user_id, rating, comment, created_at.
+  - Dependencies: All depend on review_id. No non-key attribute (e.g., rating) determines comment.
+  - No transitive dependencies.
+
+- Message:
+  - Non-key attributes: sender_id, recipient_id, message_body, sent_at.
+  - Dependencies: All depend on message_id. No non-key attribute (e.g., sender_id) determines message_body.
+  - No transitive dependencies.
+
+## Conclusion:
 
 The schema is mostly in 3NF, except for a potential issue in Booking:
-Transitive Dependency: Booking.total_price may depend on start_date, end_date, and Property.pricepernight, violating 3NF.
-Recommendation: To achieve 3NF, remove total_price from Booking and calculate it dynamically in queries. Alternatively, keep total_price for performance but enforce consistency via triggers or application logic (denormalization tradeoff).
+  - Transitive Dependency: Booking.total_price may depend on start_date, end_date, and Property.pricepernight, violating 3NF.
+  - Recommendation: To achieve 3NF, remove total_price from Booking and calculate it dynamically in queries. Alternatively, keep total_price for performance but enforce consistency via triggers or application logic (denormalization tradeoff).
 Payment.amount is not a clear violation but requires business rules to ensure consistency with Booking.total_price.
 
 ## Summary of Findings
