@@ -53,36 +53,5 @@
 - message_body: TEXT, NOT NULL
 - sent_at: TIMESTAMP, DEFAULT CURRENT_TIMESTAMP
 
-## Constraints
-
-- User Table
-    - Unique constraint on email.
-    - Non-null constraints on required fields.
-
-- Property Table
-    - Foreign key constraint on host_id.
-    - Non-null constraints on essential attributes.
-
-- Booking Table
-    - Foreign key constraints on property_id and user_id.
-    - status must be one of pending, confirmed, or canceled.
-
-- Payment Table
-    - Foreign key constraint on booking_id, ensuring payment is linked to valid bookings.
-
-- Review Table
-    - Constraints on rating values (1-5).
-    - Foreign key constraints on property_id and user_id.
-
-- Message Table
-    - Foreign key constraints on sender_id and recipient_id.
-
-- Indexing
-    - Primary Keys: Indexed automatically.
-  - Additional Indexes:
-    - email in the User table.
-    - property_id in the Property and Booking tables.
-    - booking_id in the Booking and Payment tables.
-
 ### ER DIAGRAM
 ![Airbnb Database ER Diagram](https://github.com/stepholo/alx-airbnb-database/blob/master/ERD/Airbnb%20Database%20ER%20Diagram.drawio%20(1).png)
