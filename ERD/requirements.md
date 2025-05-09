@@ -83,3 +83,6 @@
     - email in the User table.
     - property_id in the Property and Booking tables.
     - booking_id in the Booking and Payment tables.
+
+### ER DIAGRAM
+![Airbnb Database ER Diagram](https://github.com/stepholo/alx-airbnb-database/blob/master/ERD/Airbnb%20Database%20ER%20Diagram.drawio%20(1).png)
