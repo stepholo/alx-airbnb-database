@@ -19,9 +19,9 @@ INSERT INTO property (property_id, host_id, name, description, pricepernight, cr
 
 -- Insert sample data into the location table
 INSERT INTO location (location_id, property_id, street_address, county, states, created_at, updated_at) VALUES
-    (gen_random_uuid(), (SELECT user_id FROM property WHERE name = 'Cozy Downtown Loft'), '123 Main St', 'Seattle', 'WA', '2025-02-15 11:00:00', '2025-02-15 11:00:00'),
-    (gen_random_uuid(), (SELECT user_id FROM property WHERE name = 'Beachfront Cottage'), '456 Ocean Dr', 'Miami', 'FL', '2025-03-01 13:00:00', '2025-03-01 13:00:00'),
-    (gen_random_uuid(), (SELECT user_id FROM property WHERE name = 'Mountain Cabin Retreat'), '789 Pine Rd', 'Aspen', 'CO', '2025-03-10 10:00:00', '2025-03-10 10:00:00');
+    (gen_random_uuid(), (SELECT property_id FROM property WHERE name = 'Cozy Downtown Loft'), '123 Main St', 'Seattle', 'WA', '2025-02-15 11:00:00', '2025-02-15 11:00:00'),
+    (gen_random_uuid(), (SELECT property_id FROM property WHERE name = 'Beachfront Cottage'), '456 Ocean Dr', 'Miami', 'FL', '2025-03-01 13:00:00', '2025-03-01 13:00:00'),
+    (gen_random_uuid(), (SELECT property_id FROM property WHERE name = 'Mountain Cabin Retreat'), '789 Pine Rd', 'Aspen', 'CO', '2025-03-10 10:00:00', '2025-03-10 10:00:00');
 
 -- Insert sample data into the booking table
 INSERT INTO booking (booking_id, property_id, user_id, start_date, end_date, total_price, status, created_at) VALUES
