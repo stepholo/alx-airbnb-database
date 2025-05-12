@@ -46,7 +46,7 @@ CREATE TABLE location (
 	property_id UUID NOT NULL,
 	street_address VARCHAR(50) NOT NULL,
 	county VARCHAR(50) NOT NULL,
-	state VARCHAR(50) NOT NULL,
+	states VARCHAR(50) NOT NULL,
 	created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 	updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 	CONSTRAINT fk_property_location FOREIGN KEY (property_id) REFERENCES property (property_id) ON DELETE RESTRICT

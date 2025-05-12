@@ -1,5 +1,8 @@
 -- Sample Data
 
+-- Install the required extention
+CREATE EXTENSION IF NOT EXISTS pgcrypto;
+
 -- Insert sample data into the user table
 INSERT INTO "user" (user_id, first_name, last_name, email, password_hash, phone_number, role, created_at) VALUES
     (gen_random_uuid(), 'Emma', 'Wilson', 'emma.wilson@example.com', 'hashed_password_123', '+12025550123', 'guest', '2025-01-15 10:00:00'),
