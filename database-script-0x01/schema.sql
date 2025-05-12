@@ -40,10 +40,9 @@ CREATE INDEX idx_property_host_id ON property (host_id);
 CREATE TABLE location (
 	location_id UUID PRIMARY KEY,
 	property_id UUID NOT NULL,
-	country VARCHAR(50) NOT NULL,
+	street_address VARCHAR(50) NOT NULL,
+	county VARCHAR(50) NOT NULL,
 	state VARCHAR(50) NOT NULL,
-	town VARCHAR(50) NOT NULL,
-	zip_code VARCHAR(100) NOT NULL,
 	created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 	updated_at TIMESTAMB DEFAULT CURRENT_TIMESTAMP,
 	CONSTRAINT fk_property_location FOREIGN KEY (property_id) REFERENCES property (property_id) ON DELETE RESTRICT
