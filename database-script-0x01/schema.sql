@@ -27,7 +27,6 @@ CREATE TABLE property (
     host_id UUID NOT NULL,
     name VARCHAR(100) NOT NULL,
     description TEXT NOT NULL,
-    location VARCHAR(255) NOT NULL,
     pricepernight DECIMAL(10, 2) NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -36,6 +35,22 @@ CREATE TABLE property (
 
 -- Create index on property_id (primary key is already indexed)
 CREATE INDEX idx_property_host_id ON property (host_id);
+
+-- Create Location table
+CREATE TABLE location (
+	location_id UUID PRIMARY KEY,
+	property_id UUID NOT NULL,
+	country VARCHAR(50) NOT NULL,
+	state VARCHAR(50) NOT NULL,
+	town VARCHAR(50) NOT NULL,
+	zip_code VARCHAR(100) NOT NULL,
+	created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+	updated_at TIMESTAMB DEFAULT CURRENT_TIMESTAMP,
+	CONSTRAINT fk_property_location FOREIGN KEY (property_id) REFERENCES property (property_id) ON DELETE RESTRICT
+);
+
+-- Create index on property_id
+CREATE INDEX idx_location_property_id ON location (property_id);
 
 -- Create Booking table
 CREATE TABLE booking (
