@@ -9,10 +9,16 @@ INSERT INTO "user" (user_id, first_name, last_name, email, password_hash, phone_
     (gen_random_uuid(), 'Olivia', 'Smith', 'olivia.smith@example.com', 'hashed_password_112', '+12025550127', 'admin', '2025-03-01 08:00:00');
 
 -- Insert sample data into the property table
-INSERT INTO property (property_id, host_id, name, description, location, pricepernight, created_at, updated_at) VALUES
-    (gen_random_uuid(), (SELECT user_id FROM "user" WHERE email = 'james.chen@example.com'), 'Cozy Downtown Loft', 'A stylish loft in the heart of the city with modern amenities.', '123 Main St, Seattle, WA', 120.00, '2025-02-15 11:00:00', '2025-02-15 11:00:00'),
-    (gen_random_uuid(), (SELECT user_id FROM "user" WHERE email = 'liam.patel@example.com'), 'Beachfront Cottage', 'Charming cottage with stunning ocean views, perfect for a getaway.', '456 Ocean Dr, Miami, FL', 200.00, '2025-03-01 13:00:00', '2025-03-01 13:00:00'),
-    (gen_random_uuid(), (SELECT user_id FROM "user" WHERE email = 'james.chen@example.com'), 'Mountain Cabin Retreat', 'Rustic cabin surrounded by nature, ideal for hiking enthusiasts.', '789 Pine Rd, Aspen, CO', 150.00, '2025-03-10 10:00:00', '2025-03-10 10:00:00');
+INSERT INTO property (property_id, host_id, name, description, pricepernight, created_at, updated_at) VALUES
+    (gen_random_uuid(), (SELECT user_id FROM "user" WHERE email = 'james.chen@example.com'), 'Cozy Downtown Loft', 'A stylish loft in the heart of the city with modern amenities.', 120.00, '2025-02-15 11:00:00', '2025-02-15 11:00:00'),
+    (gen_random_uuid(), (SELECT user_id FROM "user" WHERE email = 'liam.patel@example.com'), 'Beachfront Cottage', 'Charming cottage with stunning ocean views, perfect for a getaway.', 200.00, '2025-03-01 13:00:00', '2025-03-01 13:00:00'),
+    (gen_random_uuid(), (SELECT user_id FROM "user" WHERE email = 'james.chen@example.com'), 'Mountain Cabin Retreat', 'Rustic cabin surrounded by nature, ideal for hiking enthusiasts.', 150.00, '2025-03-10 10:00:00', '2025-03-10 10:00:00');
+
+-- Insert sample data into the location table
+INSERT INTO location (location_id, property_id, street_address, county, states, created_at, updated_at) VALUES
+    (gen_random_uuid(), (SELECT user_id FROM property WHERE name = 'Cozy Downtown Loft'), '123 Main St', 'Seattle', 'WA', '2025-02-15 11:00:00', '2025-02-15 11:00:00'),
+    (gen_random_uuid(), (SELECT user_id FROM property WHERE name = 'Beachfront Cottage'), '456 Ocean Dr', 'Miami', 'FL', '2025-03-01 13:00:00', '2025-03-01 13:00:00'),
+    (gen_random_uuid(), (SELECT user_id FROM property WHERE name = 'Mountain Cabin Retreat'), '789 Pine Rd', 'Aspen', 'CO', '2025-03-10 10:00:00', '2025-03-10 10:00:00');
 
 -- Insert sample data into the booking table
 INSERT INTO booking (booking_id, property_id, user_id, start_date, end_date, total_price, status, created_at) VALUES
