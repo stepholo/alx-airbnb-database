@@ -32,10 +32,10 @@ INSERT INTO booking (booking_id, property_id, user_id, start_date, end_date, tot
 
 -- Insert sample data into the payment table
 INSERT INTO payment (payment_id, booking_id, amount, payment_date, payment_method) VALUES
-    (gen_random_uuid(), (SELECT booking_id FROM booking WHERE start_date = '2025-05-15'), 360.00, '2025-04-02 10:00:00', 'credit_card'),
-    (gen_random_uuid(), (SELECT booking_id FROM booking WHERE start_date = '2025-06-01'), 400.00, '2025-04-11 11:00:00', 'paypal'),
-    (gen_random_uuid(), (SELECT booking_id FROM booking WHERE start_date = '2025-07-10'), 300.00, '2025-04-16 12:00:00', 'stripe'),
-    (gen_random_uuid(), (SELECT booking_id FROM booking WHERE start_date = '2025-06-01'), 400.00, '2025-04-12 09:00:00', 'credit_card');
+    (gen_random_uuid(), (SELECT booking_id FROM booking WHERE start_date = '2025-05-15' LIMIT 1), 360.00, '2025-04-02 10:00:00', 'credit_card'),
+    (gen_random_uuid(), (SELECT booking_id FROM booking WHERE start_date = '2025-06-01' LIMIT 1), 400.00, '2025-04-11 11:00:00', 'paypal'),
+    (gen_random_uuid(), (SELECT booking_id FROM booking WHERE start_date = '2025-07-10' LIMIT 1), 300.00, '2025-04-16 12:00:00', 'stripe'),
+    (gen_random_uuid(), (SELECT booking_id FROM booking WHERE start_date = '2025-06-01' LIMIT 1), 400.00, '2025-04-12 09:00:00', 'credit_card');
 
 -- Insert sample data into the review table
 INSERT INTO review (review_id, property_id, user_id, rating, comment, created_at) VALUES
