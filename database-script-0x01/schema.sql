@@ -1,5 +1,9 @@
 -- Schema for Database Entities
 
+-- Create Database
+CREATE DATABASE rental_platform;
+GRANT ALL PRIVILEGES ON DATABASE rental_platform TO postgres;
+
 -- Create ENUM types for role, status, and payment_method
 CREATE TYPE user_role AS ENUM ('guest', 'host', 'admin');
 CREATE TYPE booking_status AS ENUM ('pending', 'confirmed', 'canceled');
@@ -44,7 +48,7 @@ CREATE TABLE location (
 	county VARCHAR(50) NOT NULL,
 	state VARCHAR(50) NOT NULL,
 	created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-	updated_at TIMESTAMB DEFAULT CURRENT_TIMESTAMP,
+	updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 	CONSTRAINT fk_property_location FOREIGN KEY (property_id) REFERENCES property (property_id) ON DELETE RESTRICT
 );
 
