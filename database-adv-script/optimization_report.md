@@ -3,7 +3,7 @@
 
 ## Query
 
-```Bash
+```SQL
 EXPLAIN SELECT
     b.booking_id,
     b.start_date,
@@ -32,7 +32,7 @@ LEFT JOIN payment AS pay ON b.booking_id = pay.booking_id;
 
 ## Analysis Report
 
-```Bash
+```SQL
                                        QUERY PLAN                                         
 -------------------------------------------------------------------------------------------
  Hash Left Join  (cost=66.55..104.84 rows=920 width=1444)
@@ -112,7 +112,7 @@ EXPLAIN SELECT ...
 |property|	Seq Scan|	230	|Moderate load|
 |location|	Seq Scan|	180	|Light scan|
 
-⚠️##   Performance Observations
+## Performance Observations
 - All tables are being fully scanned
 
 - Indicates no WHERE clause or lack of indexes.
