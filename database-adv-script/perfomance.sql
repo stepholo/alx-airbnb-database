@@ -23,5 +23,8 @@ FROM booking AS b
 JOIN "user" AS u ON b.user_id = u.user_id
 JOIN property AS p ON b.property_id = p.property_id
 LEFT JOIN location AS l ON b.property_id = l.property_id
-LEFT JOIN payment AS pay ON b.booking_id = pay.booking_id;
+LEFT JOIN payment AS pay ON b.booking_id = pay.booking_id
+WHERE b.start_date >= '2024-01-01'
+  AND b.status = 'confirmed'
+  AND pay.amount IS NOT NULL;
  
